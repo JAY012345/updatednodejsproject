@@ -1,0 +1,22 @@
+<br>
+
+<table>
+    <tr>
+    <th>title</th>
+    <th>isbn</th>
+    <th>pageCount</th>
+    <th>publishedDate</th>
+    <th>authors</th>
+  </tr>
+    {{#each data}}
+ 
+  <tr>
+      <td>{{this.title}}</td>
+      <td>{{this.isbn}}</td>
+      <td>{{this.pageCount}}</td>
+      <td>{{this.publishedDate.$date}}</td>
+      <td>{{this.authors}}</td>
+    </tr>  
+  {{/each}}
+</table>
+

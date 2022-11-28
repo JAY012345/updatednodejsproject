@@ -1,0 +1,46 @@
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  }
+
+.header, .footer{
+    width: 120%;
+    position: fixed;        
+    background: darkmagenta;
+    padding: 10px;
+    color: whitesmoke;
+    margin-left: -60px;
+    
+}
+
+
+.container{
+  width: 100%;
+  margin-top: 20px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header{
+    top: 0;
+    padding-top: 20px;
+}
+.footer{
+
+    padding-bottom: 20px;
+    bottom: 0;
+}
+
+
+table, th, td {
+  border: 1px solid palevioletred;
+}
+
+table {
+  width: 100%;
+}
+
+.color{
+  background-color: palevioletred;
+  color: white;
+}
