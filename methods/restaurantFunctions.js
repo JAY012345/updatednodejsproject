@@ -5,10 +5,8 @@ var restaurant = require('../models/restaurants');
 const { isFloat64Array } = require('util/types');
 
 function allData(res) {
-
     console.log("HIIIIII");
     res.send("Hello")
-
 }
 
 function initialize() {
@@ -25,7 +23,6 @@ function initialize() {
 }
 
 function addNewRestaurant(data, res) {
-
     // create mongose method to create a new record into collection
     console.log(data.body);
     restaurant.create({
@@ -89,4 +86,40 @@ function deleteRestaurantById(id, res) {
     });
 }
 
-module.exports = { allData, initialize, addNewRestaurant, getRestaurantById, updateRestaurantById, deleteRestaurantById }
+function getAllRestaurants(page, perPage, borough, res){
+
+    console.log("you re in")
+    checkBorough = {}
+    var _page = parseInt(page)
+    var _perPage = parseInt(perPage)
+    
+    if(borough != null){
+        checkBorough = {borough: borough}
+    }
+
+    var startIndex = ((_page-1)*_perPage)
+    var endIndex = _page*_perPage 
+
+    restaurant
+    .find(checkBorough)
+    .sort({restaurant_id:1}) 
+    .exec()
+    .then((result)=> {
+      if(result.length > startIndex && result.length >= endIndex){
+         result = result.slice(startIndex,endIndex)
+      } else if(result.length > startIndex && result.length < endIndex){
+         result = result.slice(startIndex,result.length)
+      }else {
+         result = result.slice(0,_perPage)
+      }
+ 
+    res.status(201).json(result)
+    })
+    .catch((err)=>{
+     console.log(err)
+        res.status(400).json(err)
+    })
+ }
+
+
+module.exports = { allData, initialize, addNewRestaurant, getRestaurantById, updateRestaurantById, deleteRestaurantById, getAllRestaurants }

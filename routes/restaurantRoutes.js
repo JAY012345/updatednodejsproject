@@ -6,18 +6,13 @@ var app = express();
 // app.use(express.urlencoded({extended:true}))
 
 router.get('/', (req, res) => {
-
-    // return db.allData(res)
-    res.render('allData');
+    res.render('allData')
 })
 
-router.get('/jay', (req, res) => {
-    // res.send(req.params.title)
-    var data = {
-        name: req.body.title
-    }
-    console.log(data)
-    res.json(req.query)
+router.get('/pageInfo', (req, res) => {
+    var { page, perPage, borough } = req.query;
+
+    db.getAllRestaurants(page, perPage, borough, res)
 })
 
 router.post('/', function (req, res) {
@@ -25,7 +20,6 @@ router.post('/', function (req, res) {
     db.addNewRestaurant(req, res)
 
 })
-
 
 router.get('/:restaurant_id', function (req, res) {
     let id = req.params.restaurant_id;
@@ -68,6 +62,7 @@ router.delete('/:restaurant_id', function (req, res) {
     db.deleteRestaurantById(id, res)
 
 });
+
 
 
 module.exports = router

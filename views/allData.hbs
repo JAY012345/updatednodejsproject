@@ -1,12 +1,21 @@
 <div class="container">
     <br>
-    <form action="/api/restaurants/jay" method="get"> 
-        <input type="search" name="title" placeholder="Enter ID">
-        <input type="search" name="titlee" placeholder="Enter TITLE">
-        <input type="search" name="titleee" placeholder="Enter ISBN">
-        <input type="search" name="titleeee" placeholder="Enter AUTHOR">
-        <input type="search" name="titleeeee" placeholder="Enter DESCRIPTION">
-        <a href="jay">Contact Page</a>
-    <input type="submit" value="Submit">
-</form> 
+    <form action="/api/restaurants/pageInfo" method="get">
+  <div class="form-group">
+    <label>Enter Page</label>
+    <input type="text" class="form-control" name="page" placeholder="Page">
+    <small id="emailHelp" class="form-text text-muted">Information of the selected page.</small>
+  </div>
+  <div class="form-group">
+    <label>Enter perPage</label>
+    <input type="text" class="form-control" name="perPage" placeholder="perPage">
+  </div>
+    <div class="form-group">
+    <label>Enter Borough</label>
+    <input type="text" class="form-control" name="borough" placeholder="Borough">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
 </div> 
