@@ -20,16 +20,16 @@ app.use(bodyParser.json());                                     // parse applica
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 
 
-async function serverUp(){
-	const state = await db.initialize();
-	console.log("DB Connection State : " + state)
-	if(state==0){
-	   process.exit(0)
-	}
+async function application(){
+	await db.initialize();
 	app.use('/api/restaurants', router)
-	app.listen(port,()=> console.log(`Server up and running at port ${port}.`))
 }
 
-serverUp()
+application()
+
+// App Litening
+app.listen(port, () => {
+    console.log("App Listening On Port : " + port);
+});
 
 

@@ -86,40 +86,33 @@ function deleteRestaurantById(id, res) {
     });
 }
 
-function getAllRestaurants(page, perPage, borough, res){
+function getAllRestaurants(page, perPage, borough, res) {
 
     console.log("you re in")
     checkBorough = {}
     var _page = parseInt(page)
     var _perPage = parseInt(perPage)
-    
-    if(borough != null){
-        checkBorough = {borough: borough}
+
+    if (borough != null) {
+        checkBorough = { borough: borough }
     }
 
-    var startIndex = ((_page-1)*_perPage)
-    var endIndex = _page*_perPage 
+    var start = ((_page - 1) * _perPage)
+    var end = _page * _perPage
 
     restaurant
-    .find(checkBorough)
-    .sort({restaurant_id:1}) 
-    .exec()
-    .then((result)=> {
-      if(result.length > startIndex && result.length >= endIndex){
-         result = result.slice(startIndex,endIndex)
-      } else if(result.length > startIndex && result.length < endIndex){
-         result = result.slice(startIndex,result.length)
-      }else {
-         result = result.slice(0,_perPage)
-      }
- 
-    res.status(201).json(result)
-    })
-    .catch((err)=>{
-     console.log(err)
-        res.status(400).json(err)
-    })
- }
+        .find(checkBorough)
+        .sort({ restaurant_id: 1 })
+        .exec()
+        .then((result) => {
+            result = result.slice(start, end)
+            res.json(result)
+        })
+        .catch((err) => {
+            console.log(err)
+            res.json(err)
+        })
+}
 
 
 module.exports = { allData, initialize, addNewRestaurant, getRestaurantById, updateRestaurantById, deleteRestaurantById, getAllRestaurants }
