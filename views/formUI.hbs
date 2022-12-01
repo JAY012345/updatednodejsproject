@@ -1,0 +1,36 @@
+{{!-- <br>
+<table>
+    <tr>
+    <th>id</th>
+    <th>building</th>
+    <th>coordOne</th>
+    <th>coordTwo</th>
+    <th>street</th>
+    <th>zipcode</th>
+    <th>borough</th>
+    <th>cuisine</th>
+    <th>grade</th>
+    <th>name</th>
+    <th>restaurant_id</th>
+  </tr>
+    {{#each data}}
+  <tr>
+      <td>{{this._id}}</td>
+      <td>{{this.building}}</td>
+      <td>{{this.coordOne}}</td>
+      <td>{{this.coordTwo}}</td>
+      <td>{{this.street}}</td>
+      <td>{{this.zipcode}}</td>
+      <td>{{this.borough}}</td>
+      <td>{{this.cuisine}}</td>
+      <td>{{this.grade}}</td>
+      <td>{{this.name}}</td>
+      <td>{{this.restaurant_id}}</td>
+    </tr>  
+  {{/each}}
+</table> --}}
+
+
+{{#each data}}
+{{this.borough}}
+{{/each}}

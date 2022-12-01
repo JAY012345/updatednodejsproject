@@ -1,30 +1,60 @@
 var express = require('express');
+require('dotenv').config()
 var mongoose = require('mongoose');
-var database = require('../config/database');
 var restaurant = require('../models/restaurants');
+var user = require('../models/users');
 const { isFloat64Array } = require('util/types');
+const { Result } = require('express-validator');
+const bcrypt = require('bcrypt');
+const users = require('../models/users');
 
-function allData(res) {
-    console.log("HIIIIII");
-    res.send("Hello")
-}
+
+
 
 function initialize() {
+
     const connectionParams = {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }
 
-    mongoose.connect(database.url, connectionParams).then(() => {
-        console.info("Connected to Database");
+    mongoose.connect(process.env.URL, connectionParams).then(() => {
+        console.log("Connected to Database");
     }).catch((e) => {
         console.log("Error: ", e);
     })
 }
 
+async function addUsers(data, res) {
+    const hashedPassword = await bcrypt.hash(data.body.password, 10)
+    // console.log(salt)
+    console.log(hashedPassword)
+    const usersSign = { username: data.body.username, password: hashedPassword }
+    user.create(usersSign)
+
+    res.render('userAdded')
+}
+
+async function loginUser(req, res) {
+    user.find({ "username": req.body.username }, async function (err, result) {
+        if (result.length == 0) {
+            res.render('createUser')
+        }
+        else {
+            if (await bcrypt.compare(req.body.password, result[0].password)) {
+                res.render('LoggedIn')
+            } else {
+                res.render('passwordWrong')
+            }
+        }
+    }
+    );
+}
+
+
 function addNewRestaurant(data, res) {
     // create mongose method to create a new record into collection
-    console.log(data.body);
+    console.log(data.body)
     restaurant.create({
         address: {
             building: data.body.building,
@@ -107,6 +137,8 @@ function getAllRestaurants(page, perPage, borough, res) {
         .then((result) => {
             result = result.slice(start, end)
             res.json(result)
+            // jData = JSON.parse(result)
+            // res.render('formUI', {data : jData})
         })
         .catch((err) => {
             console.log(err)
@@ -115,4 +147,4 @@ function getAllRestaurants(page, perPage, borough, res) {
 }
 
 
-module.exports = { allData, initialize, addNewRestaurant, getRestaurantById, updateRestaurantById, deleteRestaurantById, getAllRestaurants }
+module.exports = { initialize, loginUser, addUsers, addNewRestaurant, getRestaurantById, updateRestaurantById, deleteRestaurantById, getAllRestaurants }

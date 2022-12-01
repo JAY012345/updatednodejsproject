@@ -1,12 +1,40 @@
-const express = require("express")
+const express = require("express");
+const { send } = require("process");
 const router = express.Router();
 var db = require('../methods/restaurantFunctions')
+
 
 var app = express();
 // app.use(express.urlencoded({extended:true}))
 
 router.get('/', (req, res) => {
+    res.render('welcome')
+})
+
+router.get('/restaurantData', (req, res) => {
     res.render('allData')
+})
+
+router.post('/users/signin', async function(req, res){
+    
+    db.addUsers(req, res)
+
+})
+
+
+router.post('/users/login', async function(req, res){
+
+    db.loginUser(req, res)
+})
+
+router.get('/users/signinform', function(req, res){
+    res.render('signin')
+    
+})
+
+router.get('/users/loginform', function(req, res){
+    res.render('login')
+    
 })
 
 router.get('/pageInfo', (req, res) => {
