@@ -5,6 +5,7 @@ var db = require('../methods/restaurantFunctions')
 const passport = require('passport')
 
 
+
 const initializePassport = require('../passport-config')
 // initializePassport(passport)
 
@@ -21,51 +22,51 @@ router.get('/restaurantData', (req, res) => {
     res.render('allData')
 })
 
-router.post('/users/signin', async function(req, res){
-    
+router.post('/users/signin', async function (req, res) {
+
     db.addUsers(req, res)
 
 })
 
-router.post('/auth',auth, async function(req, res){
-    
+router.post('/auth', auth, async function (req, res) {
+
     db.authi(req, res)
 
 })
 
-router.post('/users/login',  async function(req, res){
+router.post('/users/login', async function (req, res) {
 
     console.log("Login");
     db.loginUser(req, res);
-    
+
 
 })
 
-router.get('/users/signinform', function(req, res){
+router.get('/users/signinform', function (req, res) {
     res.render('signin')
-    
+
 })
 
-router.get('/users/loginform', function(req, res){
+router.get('/users/loginform', function (req, res) {
     res.render('login')
 })
 
 
-function jay(req, res, next){
-    if('verify' in req.session && req.session.verify ){
+function jay(req, res, next) {
+    if ('verify' in req.session && req.session.verify) {
         next();
-    }else{
+    } else {
         res.render('welcome');
     }
 }
 
-router.get('/pageInfo',jay, (req, res) => {
+router.get('/pageInfo', jay, (req, res) => {
 
     console.log(req.session);
-    
+
     console.log(req.session.verify);
     var { page, perPage, borough } = req.query;
-    
+
     db.getAllRestaurants(page, perPage, borough, res)
 })
 
