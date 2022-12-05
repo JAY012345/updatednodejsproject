@@ -2,7 +2,13 @@ const express = require("express");
 const { send } = require("process");
 const router = express.Router();
 var db = require('../methods/restaurantFunctions')
+const passport = require('passport')
 
+
+const initializePassport = require('../passport-config')
+// initializePassport(passport)
+
+const auth = require('../Middlewares/auth');
 
 var app = express();
 // app.use(express.urlencoded({extended:true}))
@@ -21,10 +27,18 @@ router.post('/users/signin', async function(req, res){
 
 })
 
+router.post('/auth',auth, async function(req, res){
+    
+    db.authi(req, res)
 
-router.post('/users/login', async function(req, res){
+})
 
-    db.loginUser(req, res)
+router.post('/users/login',  async function(req, res){
+
+    console.log("Login");
+    db.loginUser(req, res);
+    
+
 })
 
 router.get('/users/signinform', function(req, res){
@@ -34,12 +48,24 @@ router.get('/users/signinform', function(req, res){
 
 router.get('/users/loginform', function(req, res){
     res.render('login')
-    
 })
 
-router.get('/pageInfo', (req, res) => {
-    var { page, perPage, borough } = req.query;
 
+function jay(req, res, next){
+    if('verify' in req.session && req.session.verify ){
+        next();
+    }else{
+        res.render('welcome');
+    }
+}
+
+router.get('/pageInfo',jay, (req, res) => {
+
+    console.log(req.session);
+    
+    console.log(req.session.verify);
+    var { page, perPage, borough } = req.query;
+    
     db.getAllRestaurants(page, perPage, borough, res)
 })
 

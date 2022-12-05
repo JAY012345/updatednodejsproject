@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-header">
+    Search by ID
+  </div>
+  <div class="card-body">
+    <div class="container">
+    <br>
+    <form action="/api/restaurants/pageInfo" method="get">
+  <div class="form-group">
+    <label>Enter ID</label>
+    <input type="text" class="form-control" name="page" placeholder="ID">
+    <small id="emailHelp" class="form-text text-muted">Information of the selected page.</small>
+  </div>
+  </div>
+  {{!-- <input type="hidden" name="token" value="{{data}}"> --}}
+
+  <button type="submit" class="btn btn-primary">Submit</button><hr>
+
+</form>
+
+</div> 

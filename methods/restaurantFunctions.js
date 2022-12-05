@@ -6,10 +6,12 @@ var user = require('../models/users');
 const { isFloat64Array } = require('util/types');
 const { Result } = require('express-validator');
 const bcrypt = require('bcrypt');
-const users = require('../models/users');
+const jwt = require('jsonwebtoken');
 
 
-
+function authi(req, res) {
+    res.send(req.user);
+}
 
 function initialize() {
 
@@ -25,24 +27,58 @@ function initialize() {
     })
 }
 
-async function addUsers(data, res) {
-    const hashedPassword = await bcrypt.hash(data.body.password, 10)
-    // console.log(salt)
-    console.log(hashedPassword)
-    const usersSign = { username: data.body.username, password: hashedPassword }
-    user.create(usersSign)
+async function addUsers(req, res) {
 
-    res.render('userAdded')
+    const { username, password } = req.body
+    try {
+        const existingUser = await user.findOne({ username: username });
+        if (existingUser) {
+            res.render('UserAlreadythere');
+        }
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
+        const result = {
+            username: username,
+            password: hashedPassword
+        };
+        const token = jwt.sign({ username: result.username, id: result._id }, process.env.SECRET_KEY);
+
+        const result1 = {
+            username: username,
+            password: hashedPassword,
+            token: token
+        };
+
+        user.create(result1)
+        req.isUserAuthenticated = true;
+        // res.status(201).json({user: result, token: token})
+        res.render('userAdded')
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Something went wrong" })
+    }
+
 }
 
+
 async function loginUser(req, res) {
-    user.find({ "username": req.body.username }, async function (err, result) {
+
+    const existingUser = user.find({ "username": req.body.username }, async function (err, result) {
         if (result.length == 0) {
             res.render('createUser')
+
         }
         else {
             if (await bcrypt.compare(req.body.password, result[0].password)) {
+
+                const token = jwt.sign({ username: user.username, user_id: user._id }, process.env.SECRET_KEY)
+
+                req.session.verify = true;
+
                 res.render('LoggedIn')
+
             } else {
                 res.render('passwordWrong')
             }
@@ -51,9 +87,7 @@ async function loginUser(req, res) {
     );
 }
 
-
 function addNewRestaurant(data, res) {
-    // create mongose method to create a new record into collection
     console.log(data.body)
     restaurant.create({
         address: {
@@ -78,7 +112,6 @@ function addNewRestaurant(data, res) {
     }, function (err, restaurantData) {
         if (err)
             res.send(err);
-        // get and return all the employees after newly created employe record
         restaurant.find(function (err, restaurantData) {
             if (err)
                 res.send(err)
@@ -91,7 +124,6 @@ function getRestaurantById(id, res) {
     restaurant.findById(id, function (err, restaurantData) {
         if (err)
             res.send(err)
-
         res.json(restaurantData);
     }
     )
@@ -100,7 +132,6 @@ function getRestaurantById(id, res) {
 function updateRestaurantById(data, id, res) {
     restaurant.findByIdAndUpdate(id, data, function (err, restaurantData) {
         if (err) throw err;
-
         res.send('Successfully! Rastaurant updated - ' + restaurantData.name);
     });
 }
@@ -116,7 +147,8 @@ function deleteRestaurantById(id, res) {
     });
 }
 
-function getAllRestaurants(page, perPage, borough, res) {
+async function getAllRestaurants(page, perPage, borough, res) {
+
 
     console.log("you re in")
     checkBorough = {}
@@ -130,15 +162,15 @@ function getAllRestaurants(page, perPage, borough, res) {
     var start = ((_page - 1) * _perPage)
     var end = _page * _perPage
 
-    restaurant
-        .find(checkBorough)
+    var data1 = await restaurant
+        .find(checkBorough).lean()
         .sort({ restaurant_id: 1 })
         .exec()
+
         .then((result) => {
             result = result.slice(start, end)
-            res.json(result)
-            // jData = JSON.parse(result)
-            // res.render('formUI', {data : jData})
+            console.log(result)
+            res.render('formUI', { data: result })
         })
         .catch((err) => {
             console.log(err)
@@ -147,4 +179,4 @@ function getAllRestaurants(page, perPage, borough, res) {
 }
 
 
-module.exports = { initialize, loginUser, addUsers, addNewRestaurant, getRestaurantById, updateRestaurantById, deleteRestaurantById, getAllRestaurants }
+module.exports = { initialize, authi, loginUser, addUsers, addNewRestaurant, getRestaurantById, updateRestaurantById, deleteRestaurantById, getAllRestaurants }

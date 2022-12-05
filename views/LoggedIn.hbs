@@ -1,37 +1,41 @@
 <div class="container">
-<br>
-<div class="card">
-  <div class="card-header">
-    Successfully Logged In!
-  </div>
-  <div class="card-body">
-    <div class="container">
+  <br>
+  <div class="card">
+    <div class="card-header">
+      Successfully Logged In!
+    </div>
+    <div class="card-body">
+      <div class="container">
+        <br>
+        <form action="/api/restaurants/pageInfo" method="get">
+          <div class="form-group">
+            <label>Enter Page</label>
+            <input type="text" class="form-control" name="page" placeholder="Page">
+            <small id="emailHelp" class="form-text text-muted">Information of the selected page.</small>
+          </div>
+          <div class="form-group">
+            <label>Enter perPage</label>
+            <input type="text" class="form-control" name="perPage" placeholder="perPage">
+          </div>
+          <div class="form-group">
+            <label>Enter Borough</label>
+            <input type="text" class="form-control" name="borough" placeholder="Borough">
+          </div>
+          {{!-- <input type="hidden" name="token" value="{{data}}"> --}}
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <hr>
+        </form>
+      </div>
+    </div> 
     <br>
-    <form action="/api/restaurants/pageInfo" method="get">
-  <div class="form-group">
-    <label>Enter Page</label>
-    <input type="text" class="form-control" name="page" placeholder="Page">
-    <small id="emailHelp" class="form-text text-muted">Information of the selected page.</small>
   </div>
-  <div class="form-group">
-    <label>Enter perPage</label>
-    <input type="text" class="form-control" name="perPage" placeholder="perPage">
-  </div>
-    <div class="form-group">
-    <label>Enter Borough</label>
-    <input type="text" class="form-control" name="borough" placeholder="Borough">
-  </div>
-
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-</div> 
-
-    
-  </div>
+  <br>
+  <a href="/api/restaurants" class="btn btn-primary">Home Page</a>
 </div>
 <br>
-<a href="/api/restaurants" class="btn btn-primary">Home Page</a>
+
+
+<br>
+
 </div>
-
-
