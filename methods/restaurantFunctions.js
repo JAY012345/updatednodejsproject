@@ -7,6 +7,7 @@ const { isFloat64Array } = require('util/types');
 const { Result } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+var database = require('../config/database');
 
 
 function authi(req, res) {
@@ -20,7 +21,7 @@ function initialize() {
         useUnifiedTopology: true
     }
 
-    mongoose.connect(process.env.URL, connectionParams).then(() => {
+    mongoose.connect(database.URL, connectionParams).then(() => {
         console.log("Connected to Database");
     }).catch((e) => {
         console.log("Error: ", e);
@@ -41,7 +42,7 @@ async function addUsers(req, res) {
             username: username,
             password: hashedPassword
         };
-        const token = jwt.sign({ username: result.username, id: result._id }, process.env.SECRET_KEY);
+        const token = jwt.sign({ username: result.username, id: result._id }, database.SECRET_KEY);
 
         const result1 = {
             username: username,
@@ -73,7 +74,7 @@ async function loginUser(req, res) {
         else {
             if (await bcrypt.compare(req.body.password, result[0].password)) {
 
-                const token = jwt.sign({ username: user.username, user_id: user._id }, process.env.SECRET_KEY)
+                const token = jwt.sign({ username: user.username, user_id: user._id }, database.SECRET_KEY)
 
                 req.session.verify = true;
 
