@@ -1,6 +1,5 @@
 var express = require('express');
 var mongoose = require('mongoose');
-
 var app = express();
 const path = require("path")
 var bodyParser = require('body-parser');
@@ -14,27 +13,14 @@ const sessions = require('express-session');
 app.use(express.static(path.join(__dirname, 'public')));
 //staring engine with extension name :  .hbs
 app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
-// app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: "main"}));
 app.set('view engine', 'hbs');
 
-// pull information from HTML POST (express4)
-var port = process.env.PORT || 8080;
+
+var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ 'extended': 'true' }));            // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                     // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(express.json())
-
-// exphbs({
-
-//     runtimeOptions: {
-
-//         allowProtoPropertiesByDefault: true,
-
-//         allowProtoMethodsByDefault: true,
-
-//     },
-
-// })
 
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(sessions({
@@ -45,9 +31,6 @@ app.use(sessions({
 }));
 
 app.use(cookieParser());
-
-
-
 
 async function application() {
 
