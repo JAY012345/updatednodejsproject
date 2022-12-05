@@ -34,7 +34,7 @@ app.use(sessions({
 app.use(cookieParser());
 
 async function application() {
-
+    console.log("Line 37");
     await db.initialize();
     app.use('/api/restaurants', router)
 }
