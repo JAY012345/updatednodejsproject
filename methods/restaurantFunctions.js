@@ -5,7 +5,7 @@ var restaurant = require('../models/restaurants');
 var user = require('../models/users');
 const { isFloat64Array } = require('util/types');
 const { Result } = require('express-validator');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 var database = require('../config/database');
 
