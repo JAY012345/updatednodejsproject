@@ -2,7 +2,7 @@
   "name": "asn4-mongo-jaykumar",
   "version": "1.0.0",
   "description": "n01482521",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
