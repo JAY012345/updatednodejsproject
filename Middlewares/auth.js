@@ -25,31 +25,3 @@ const verifyToken = (req, res, next) => {
 };
 
 module.exports = verifyToken;
-
-
-// const auth = (req, res, next) => {
-//     try{
-
-
-//         const token = req.body.token || req.query.token || req.headers["x-access-token"];
-
-//         // let token = req.headers.authorization;
-//         if(token){
-//             // token = token.split(" ")[1];
-//             // let user = jwt.verify(token, SECRET_KEY);
-//             // req.userId = user.id;
-
-//             const decoded = jwt.verify(token, SECRET_KEY);
-//             req.user = decoded;
-
-//         }
-//         else{
-//             res.status(401).json({message: "Unautherized User"})
-//         }
-
-//     }catch(error){
-
-//     }
-// }
-
-// module.exports = auth;

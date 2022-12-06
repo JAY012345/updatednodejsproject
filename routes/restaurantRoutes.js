@@ -52,7 +52,7 @@ router.get('/users/loginform', function (req, res) {
 })
 
 
-function jay(req, res, next) {
+function security(req, res, next) {
     if ('verify' in req.session && req.session.verify) {
         next();
     } else {
@@ -60,7 +60,7 @@ function jay(req, res, next) {
     }
 }
 
-router.get('/pageInfo', jay, (req, res) => {
+router.get('/pageInfo', security, (req, res) => {
 
     console.log(req.session);
 
@@ -77,6 +77,7 @@ router.post('/', function (req, res) {
 })
 
 router.get('/:restaurant_id', function (req, res) {
+
     let id = req.params.restaurant_id;
     db.getRestaurantById(id, res)
 });
